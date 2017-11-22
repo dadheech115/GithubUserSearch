@@ -445,6 +445,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = S8836B4HA9;
 				INFOPLIST_FILE = GithubUserSearch/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.startrek.GithubUserSearch;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -460,6 +461,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = S8836B4HA9;
 				INFOPLIST_FILE = GithubUserSearch/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.startrek.GithubUserSearch;
 				PRODUCT_NAME = "$(TARGET_NAME)";
