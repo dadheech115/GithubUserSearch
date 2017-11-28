@@ -77,6 +77,10 @@ class ViewController: UIViewController {
 					}
 					else {
 						if let json = jsonData, let users = json["items"] as? [[String : Any]]  {
+							if self.currentPageIndex==1{
+								self.arrayResults?.removeAll()
+								self.tableViewResults?.reloadData()
+							}
 							
 							for userInformation in users {
 								let user = User.init(dicitonary: userInformation )
