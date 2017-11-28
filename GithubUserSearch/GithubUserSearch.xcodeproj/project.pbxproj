@@ -16,8 +16,12 @@
 		3CBC1C691FC48A0700BB69A9 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3CBC1C671FC48A0700BB69A9 /* Main.storyboard */; };
 		3CBC1C701FC48A9400BB69A9 /* GenericFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CBC1C6D1FC48A9400BB69A9 /* GenericFunctions.swift */; };
 		3CBC1C731FC48AE200BB69A9 /* UserDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CBC1C721FC48AE200BB69A9 /* UserDetailViewController.swift */; };
-		3CBC1C751FC50B7F00BB69A9 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CBC1C741FC50B7F00BB69A9 /* User.swift */; };
 		3CBC1C771FC5215C00BB69A9 /* Octocat.png in Resources */ = {isa = PBXBuildFile; fileRef = 3CBC1C761FC5215C00BB69A9 /* Octocat.png */; };
+		3CDA29691FCC7BD000B3729D /* GithubUserSearchModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 3CDA29671FCC7BD000B3729D /* GithubUserSearchModel.xcdatamodeld */; };
+		3CDA296B1FCC7BEF00B3729D /* DBManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CDA296A1FCC7BEF00B3729D /* DBManager.swift */; };
+		3CDA296D1FCC7CDE00B3729D /* DBMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CDA296C1FCC7CDE00B3729D /* DBMapper.swift */; };
+		3CDA296E1FCD0B7100B3729D /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CBC1C741FC50B7F00BB69A9 /* User.swift */; };
+		3CDA29701FCD0F4D00B3729D /* Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CDA296F1FCD0F4D00B3729D /* Reachability.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -55,6 +59,10 @@
 		3CBC1C721FC48AE200BB69A9 /* UserDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserDetailViewController.swift; sourceTree = "<group>"; };
 		3CBC1C741FC50B7F00BB69A9 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		3CBC1C761FC5215C00BB69A9 /* Octocat.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Octocat.png; sourceTree = "<group>"; };
+		3CDA29681FCC7BD000B3729D /* GithubUserSearchModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = GithubUserSearchModel.xcdatamodel; sourceTree = "<group>"; };
+		3CDA296A1FCC7BEF00B3729D /* DBManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DBManager.swift; sourceTree = "<group>"; };
+		3CDA296C1FCC7CDE00B3729D /* DBMapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DBMapper.swift; sourceTree = "<group>"; };
+		3CDA296F1FCD0F4D00B3729D /* Reachability.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reachability.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -115,6 +123,10 @@
 				3CBC1C3E1FC487F800BB69A9 /* Assets.xcassets */,
 				3CBC1C401FC487F800BB69A9 /* LaunchScreen.storyboard */,
 				3CBC1C431FC487F800BB69A9 /* Info.plist */,
+				3CDA29671FCC7BD000B3729D /* GithubUserSearchModel.xcdatamodeld */,
+				3CDA296A1FCC7BEF00B3729D /* DBManager.swift */,
+				3CDA296C1FCC7CDE00B3729D /* DBMapper.swift */,
+				3CDA296F1FCD0F4D00B3729D /* Reachability.swift */,
 			);
 			path = GithubUserSearch;
 			sourceTree = "<group>";
@@ -275,8 +287,12 @@
 				3CBC1C3A1FC487F800BB69A9 /* ViewController.swift in Sources */,
 				3CBC1C731FC48AE200BB69A9 /* UserDetailViewController.swift in Sources */,
 				3CBC1C381FC487F800BB69A9 /* AppDelegate.swift in Sources */,
-				3CBC1C751FC50B7F00BB69A9 /* User.swift in Sources */,
+				3CDA29691FCC7BD000B3729D /* GithubUserSearchModel.xcdatamodeld in Sources */,
+				3CDA296E1FCD0B7100B3729D /* User.swift in Sources */,
+				3CDA29701FCD0F4D00B3729D /* Reachability.swift in Sources */,
+				3CDA296D1FCC7CDE00B3729D /* DBMapper.swift in Sources */,
 				3CBC1C701FC48A9400BB69A9 /* GenericFunctions.swift in Sources */,
+				3CDA296B1FCC7BEF00B3729D /* DBManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -443,11 +459,11 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = S8836B4HA9;
+				DEVELOPMENT_TEAM = 263PD2UF23;
 				INFOPLIST_FILE = GithubUserSearch/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.startrek.GithubUserSearch;
+				PRODUCT_BUNDLE_IDENTIFIER = com.startrek.GithubUserSearch1;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -459,11 +475,11 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = S8836B4HA9;
+				DEVELOPMENT_TEAM = 263PD2UF23;
 				INFOPLIST_FILE = GithubUserSearch/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.startrek.GithubUserSearch;
+				PRODUCT_BUNDLE_IDENTIFIER = com.startrek.GithubUserSearch1;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -576,6 +592,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		3CDA29671FCC7BD000B3729D /* GithubUserSearchModel.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				3CDA29681FCC7BD000B3729D /* GithubUserSearchModel.xcdatamodel */,
+			);
+			currentVersion = 3CDA29681FCC7BD000B3729D /* GithubUserSearchModel.xcdatamodel */;
+			path = GithubUserSearchModel.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 3CBC1C2C1FC487F800BB69A9 /* Project object */;
 }

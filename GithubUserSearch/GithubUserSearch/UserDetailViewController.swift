@@ -8,6 +8,8 @@
 
 
 import UIKit
+import CoreData
+import SafariServices
 
 
 class UserDetailViewController: UIViewController {
@@ -19,16 +21,25 @@ class UserDetailViewController: UIViewController {
     @IBOutlet weak var labelUserPublicGistCount: UILabel?
     @IBOutlet weak var labelUserFollowersCount: UILabel?
 	
+	@IBOutlet weak var labelCompany: UILabel!
 	
+	@IBOutlet weak var labelLocation: UILabel!
+	@IBOutlet weak var labelCreatedDate: UILabel!
+	@IBOutlet weak var labelUpdatedDate: UILabel!
 	
     
-    var userInformation : User?
+    var userInformation : NSManagedObject?
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		setupNavigationElements()
-		if let username = userInformation?.login {
+		if let username = userInformation?.value(forKeyPath: "login") as? String {
+			if Reachability.isConnectedToNetwork() == true{
 			fetchDataFromUrl(urlString: GenericFunctions.userDetailFetchUrl + username)
+			}else{
+				userInformation = DBManager.getUserDetail(searchKey: username)
+				setupViewWithValues()
+			}
 		}
 		else {
 			setupViewWithValues()
@@ -56,7 +67,9 @@ class UserDetailViewController: UIViewController {
 							GenericFunctions.showAlert(title: "Error", message: "No records")
 						}
 						else {
-							self.userInformation = User.init(dicitonary: jsonData!)
+							let user = User.init(dicitonary: jsonData!)
+							DBManager.updateUser(user: user)
+							self.userInformation = DBManager.getUserDetail(searchKey: user.login!)
 							DispatchQueue.main.async {
 								self.setupViewWithValues()
 							}
@@ -73,35 +86,72 @@ class UserDetailViewController: UIViewController {
 	func setupNavigationElements() {
 		
 		navigationController?.navigationBar.isTranslucent = false
-		navigationItem.title = userInformation?.name
+		navigationItem.title = userInformation?.value(forKeyPath: "login") as? String
+		
+		navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Share", style: .plain, target: self, action: #selector(shareTapped))
 		
 	}
     
     func setupViewWithValues() {
 		
-		if let publicRepoCount = userInformation?.repoCount {
+		if let publicRepoCount = userInformation?.value(forKeyPath: "repoCount") {
 			labelUserPublicRepoCount?.text = String(describing: publicRepoCount)
 		}
 		
-		if let followersCount = userInformation?.followersCount {
+		if let followersCount = userInformation?.value(forKeyPath: "followersCount") {
 			labelUserFollowersCount?.text = String(describing: followersCount)
 		}
 		
-		if let avatarUrl = userInformation?.avatarUrl, let profilePicURL = URL(string: avatarUrl) {
+		if let avatarUrl = userInformation?.value(forKeyPath: "avatarUrl"), let profilePicURL = URL(string: avatarUrl as! String) {
 			imageViewUserPic?.contentMode = .scaleAspectFill
 			loadImageFromURL(url: profilePicURL)
 		}
         
-		if let name = userInformation?.name {
-            labelUserName?.text = name
+		if let name = userInformation?.value(forKeyPath: "name") {
+			labelUserName?.text = name as? String
         }
 
-        if let publicGistsCount = userInformation?.gistCount {
+        if let publicGistsCount = userInformation?.value(forKeyPath: "gistCount") {
             labelUserPublicGistCount?.text = String(describing: publicGistsCount)
         }
+		
+		if let company = userInformation?.value(forKeyPath: "company") as? String {
+			labelCompany?.text =  "Company  \n" + company
+		}else{
+			labelCompany?.text =  "Company  --"
+		}
+		
+		if let location = userInformation?.value(forKeyPath: "location") as? String{
+			labelLocation?.text = "Location  \n" + location
+		}else{
+			labelLocation?.text = "Location  --"
+		}
+		
+		if let creationDate = userInformation?.value(forKeyPath: "creationDate") as? String {
+			labelCreatedDate?.text = "Creation  \n" + (getFormatedDate(dateString: creationDate) ?? "--")
+		}else{
+			labelCreatedDate?.text = "Creation  --"
+		}
+		
+		if let updatedDate = userInformation?.value(forKeyPath: "updatedDate") as? String {
+			labelUpdatedDate?.text = "Last update  \n" + (getFormatedDate(dateString: updatedDate)  ?? "--")
+		}else{
+			labelUpdatedDate?.text = "Last update --"
+		}
         
 		
     }
+	
+	func getFormatedDate(dateString: String?)-> String? {
+		
+		let formatter = DateFormatter()
+		formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss'Z'"
+		if let dateString = dateString, let date  = formatter.date(from: dateString)  {
+			formatter.dateFormat = "dd MMM, yy"
+			return formatter.string(from: date)
+		}
+		return nil
+	}
 	
     func loadImageFromURL(url: URL) {
 
@@ -123,4 +173,17 @@ class UserDetailViewController: UIViewController {
         }
     }
 
+	@objc func shareTapped(sender : UIButton) {
+		if let htmlUrl = userInformation?.value(forKeyPath: "htmlUrl") as? String  {
+			
+			let activityVC = UIActivityViewController(activityItems: [htmlUrl], applicationActivities: nil)
+			
+			activityVC.popoverPresentationController?.sourceView = sender
+			self.present(activityVC, animated: true, completion: nil)
+		}
+	}
+
+}
+
+extension UserDetailViewController :SFSafariViewControllerDelegate{
 }

@@ -8,6 +8,7 @@
 
 
 import UIKit
+import CoreData
 
 class ViewController: UIViewController {
 	
@@ -16,7 +17,7 @@ class ViewController: UIViewController {
 	
 	
 	var searchKeyword : String?
-	var arrayResults : Array<User>?
+	var arrayResults : Array<NSManagedObject>?
 	var totalResult  : Int?
 	var currentPageIndex : Int = 0
 	
@@ -30,6 +31,7 @@ class ViewController: UIViewController {
 		
 		searchBar?.delegate = self
 		searchBar?.showsCancelButton = false
+		searchBar?.placeholder = "Enter username to search"
 		
 		navigationController?.navigationBar.isTranslucent = false
 		navigationItem.title = "Search"
@@ -42,6 +44,8 @@ class ViewController: UIViewController {
 	
 	
 	func searchUsersFor(searchedString: String?, pageCount : String?) {
+		
+		if Reachability.isConnectedToNetwork() == true{
 		
 		if let searchedString = searchedString, searchedString.isEmpty == false {
 			
@@ -76,7 +80,8 @@ class ViewController: UIViewController {
 							
 							for userInformation in users {
 								let user = User.init(dicitonary: userInformation )
-								self.arrayResults?.append(user)
+								DBManager.addUser(user: user)
+								self.arrayResults?.append(DBManager.getUserDetail(searchKey: user.login!)!)
 							}
 							
 							if let totalCount = json["total_count"] as? Int {
@@ -103,6 +108,12 @@ class ViewController: UIViewController {
 		else {
 			
 			self.tableViewResults?.reloadData()
+		}
+		}else{
+			let userInformationFromDb = DBManager.getUsers(searchKey: searchedString!)
+			self.arrayResults = userInformationFromDb
+			self.tableViewResults?.reloadData()
+			print("from DB")
 		}
 	}
 }
@@ -132,26 +143,29 @@ extension ViewController : UITableViewDelegate,UITableViewDataSource {
 		let cell = tableView.dequeueReusableCell(withIdentifier: "profileInfo")
 		
 		if let cell = cell {
-			var user:User = arrayResults![indexPath.row]
-			cell.textLabel?.text = user.login
+			var user:NSManagedObject = arrayResults![indexPath.row]
+			cell.textLabel?.text = user.value(forKeyPath: "login") as? String
 			cell.imageView?.image = UIImage.init(imageLiteralResourceName:"Octocat.png")
 			if let image = cell.imageView {
-				
-				GenericFunctions.getDataFromUrl(url: URL(string: user.avatarUrl!)!) { data, response, error in
-					defer {
+				if let avatarUrl = user.value(forKeyPath: "avatarUrl"), let profilePicURL = URL(string: avatarUrl as! String) {
+					GenericFunctions.getDataFromUrl(url: URL(string: (user.value(forKeyPath: "avatarUrl") as? String)!)!) { data, response, error in
+						defer {
+							DispatchQueue.main.async() {
+							}
+						}
+						guard let data = data, error == nil else {
+							return
+						}
+						
 						DispatchQueue.main.async() {
+							cell.imageView?.image = UIImage(data: data)
+							//						cell.layoutSubviews()
+							//						self.tableViewResults?.reloadRows(at: [indexPath], with: UITableViewRowAnimation.none)
 						}
 					}
-					guard let data = data, error == nil else {
-						return
-					}
-					
-					DispatchQueue.main.async() {
-						cell.imageView?.image = UIImage(data: data)
-//						cell.layoutSubviews()
-//						self.tableViewResults?.reloadRows(at: [indexPath], with: UITableViewRowAnimation.none)
-					}
-				}
+			}
+				
+
 			}
 			return cell
 		}
