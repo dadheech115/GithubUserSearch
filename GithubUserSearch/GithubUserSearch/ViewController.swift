@@ -150,6 +150,7 @@ extension ViewController : UITableViewDelegate,UITableViewDataSource {
 			var user:NSManagedObject = arrayResults![indexPath.row]
 			cell.textLabel?.text = user.value(forKeyPath: "login") as? String
 			cell.imageView?.image = UIImage.init(imageLiteralResourceName:"Octocat.png")
+			cell.imageView?.clipsToBounds = true
 			if let image = cell.imageView {
 				if let avatarUrl = user.value(forKeyPath: "avatarUrl"), let profilePicURL = URL(string: avatarUrl as! String) {
 					GenericFunctions.getDataFromUrl(url: URL(string: (user.value(forKeyPath: "avatarUrl") as? String)!)!) { data, response, error in
@@ -162,8 +163,12 @@ extension ViewController : UITableViewDelegate,UITableViewDataSource {
 						}
 						
 						DispatchQueue.main.async() {
-							cell.imageView?.image = UIImage(data: data)
-							//						cell.layoutSubviews()
+							UIView.transition(with: cell.imageView!, duration:0.3, options: UIViewAnimationOptions.transitionCrossDissolve, animations: {
+								cell.imageView?.image = UIImage(data: data)
+								cell.layoutSubviews()
+							}, completion: nil)
+							
+							
 							//						self.tableViewResults?.reloadRows(at: [indexPath], with: UITableViewRowAnimation.none)
 						}
 					}

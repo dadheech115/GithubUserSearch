@@ -167,7 +167,10 @@ class UserDetailViewController: UIViewController {
                 }
 
                 DispatchQueue.main.async() {
-                    self.imageViewUserPic?.image = UIImage(data: data)
+					UIView.transition(with: self.imageViewUserPic!, duration:0.3, options: UIViewAnimationOptions.transitionCrossDissolve, animations: {
+						self.imageViewUserPic?.image = UIImage(data: data)
+					}, completion: nil)
+					
                 }
             }
         }
